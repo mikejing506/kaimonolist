@@ -1,0 +1,6 @@
+{
+	"name": "milligram-starter",
+	"dependencies": {
+		"milligram": "latest"
+	}
+}
