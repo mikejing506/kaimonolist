@@ -64,3 +64,4 @@ typings/
 # cache files
 .cache
 package-lock.json
+radata/

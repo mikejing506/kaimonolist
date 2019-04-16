@@ -4,31 +4,42 @@ import Gun from 'gun';
 
 const gun = Gun()
 
-const list = t`
+const list = new t`
 >main.wrapper
     >section.container
-        >form
-            >fieldset
-                >input
-                    %type={{attr.type=text}}
-                >button.button
-                    .追加
+        >fieldset
+            >input
+                %type={{attr.type=text}}
+                #placeholder={{attr.placeholder=物品名称}}
+                %value = {{inputVal}}
+            >button.button
+                .追加
+                @click = add
     >section.container
         >ul
-            >li
+            +item
+`({
+    $data:{
+        items:[]
+    },
+    $methods:{
+        add({state}){
+            let value = state.$data.inputVal
+            state.$data.items.push(value)
+            state.item.push(new item({$data:{data:value}}))
+            console.log(state.$data.items)
+        }
+    }
+});
+
+const item = t`
+>li
+    .{{data}}
 `;
 
-gun.get('list').put({
-    item:{
-        name:"",
-        time:Date.now(),
-        weight:""
-    },
-  });
-  
-  gun.get('list').on(function(data, key){
-    console.log("update:", data);
-    console.log("key:", key);
-  });
+gun.get('list').on(function(data, key){
 
-(new list({$data:{Data:"oao"}})).$mount({target: document.body});
+});
+
+list.$mount({target: document.body});
+
