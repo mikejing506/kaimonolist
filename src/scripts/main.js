@@ -10,6 +10,7 @@ const list = new t`
         >fieldset
             >input
                 %type={{attr.type=text}}
+                #required
                 #placeholder={{attr.placeholder=物品名称}}
                 %value = {{inputVal}}
             >button.button
@@ -19,26 +20,37 @@ const list = new t`
         >ul
             +item
 `({
-    $data:{
-        items:[]
-    },
     $methods:{
         add({state}){
-            let value = state.$data.inputVal
-            state.$data.items.push(value)
-            state.item.push(new item({$data:{data:value}}))
-            console.log(state.$data.items)
+            let _ = state.$data.inputVal
+            gun.get("lists").get("list").once((data)=>{
+                if(data){
+                    
+                    gun.get("lists").put({
+                        list:data + ',' + _
+                    })
+                }else{
+                    gun.get("lists").put({
+                        list:[_].join()
+                    })
+                }
+            })
         }
     }
 });
 
 const item = t`
 >li
+
     .{{data}}
 `;
 
-gun.get('list').on(function(data, key){
-
+gun.get('lists').on(function(data, key){
+    list.item.empty()
+    console.log(list.item)
+    data.list.split(",").map((v,i)=>{
+        list.item.push(new item({$data:{data:v,id:i}}))
+    })
 });
 
 list.$mount({target: document.body});

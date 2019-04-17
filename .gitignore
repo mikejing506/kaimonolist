@@ -65,3 +65,4 @@ typings/
 .cache
 package-lock.json
 radata/
+test.js
