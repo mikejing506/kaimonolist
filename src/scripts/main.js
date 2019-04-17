@@ -41,16 +41,16 @@ const list = new t`
 
 const item = t`
 >li
-
+    >button.button-outline
+        .移除
+        @click = remove:{{id}}
     .{{data}}
 `;
 
 gun.get('lists').on(function(data, key){
     list.item.empty()
-    console.log(list.item)
-    data.list.split(",").map((v,i)=>{
-        list.item.push(new item({$data:{data:v,id:i}}))
-    })
+    let _items = data.list.split(',')
+    if(_items != "")list.item = _items.map((v,i)=>new item({$data:{data:v,id:i},$methods:{remove(id){_items.splice(id.value,1);gun.get("lists").put({list:_items.join()})}}}))
 });
 
 list.$mount({target: document.body});
